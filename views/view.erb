@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="shortcut icon" href="favicon.ico">
+
+    <title>Look-a-Ryks</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/styles.css">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>
+        Look-a-Ryks
+      </h1>
+
+      <form action='/upload' enctype="multipart/form-data" method='POST' id="form">
+        <input name="file" type="file" />
+        <input type="submit" value="Upload" />
+      </form>
+
+      <% if @uploaded_url %>
+        <div id="uploaded-photo">
+          <img src='<%= @uploaded_url %>' />
+        </div>
+
+        <h2>kind of looks like:</h2>
+
+        <div class="row" id="results">
+        <% @results.each do |result| %>
+          <div class='col-sm-4'>
+            <h3><%= result["similarity"].to_i %>%</h3>
+            <img src='<%= result["image_url"] %>' />
+            <a href='https://www.rijksmuseum.nl/nl/collectie/<%= result["object_number"] %>' target='_blank'>'<%= result["long_title"] %>'</a>
+          </div>
+        <% end %>
+        </div>
+      <% end %>
+    </div>
+  </body>
+</html>
