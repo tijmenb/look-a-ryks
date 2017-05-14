@@ -22,28 +22,61 @@
         Look-a-Ryks
       </h1>
 
+      <p class="lead">
+        Look-a-Ryks uses facial recognition to find people who look like you from the
+        <a href='https://www.rijksmuseum.nl/en/rijksstudio'>Rijksmuseum art collection</a>.
+
+        <br/>
+
+        Examples:
+        <a href='/lookalikes/ca53c344-f4da-4891-ad81-1a93eb65f273'>Taylor Swift</a>,
+        <a href='/lookalikes/9184d6c6-04fa-4fa0-871f-344a932f9692'>David Beckham</a>,
+        <a href='/lookalikes/8367f184-f01a-4378-9932-ee7d3e82bd6b'>Jennifer Lawrence</a>,
+        <a href='/lookalikes/1ccfcc6f-796f-4260-9ea2-863caad06667'>Sean Spicer</a>,
+        <a href='/lookalikes/f75031c6-ac7a-424c-a781-2eb4a9309c34'>Sterling Archer</a>.
+      </p>
+
       <form action='/upload' enctype="multipart/form-data" method='POST' id="form">
         <input name="file" type="file" />
         <input type="submit" value="Upload" />
       </form>
 
       <% if @uploaded_url %>
-        <div id="uploaded-photo">
-          <img src='<%= @uploaded_url %>' />
+        <div class="container">
+          <div class="row" id="uploaded-photo">
+            <div class='col-sm-5'>
+              <img src='<%= @uploaded_url %>' />
+            </div>
+
+            <div class='col-sm-2'>
+              <h2 style='margin-top:100px;'>kind of looks like</h2>
+            </div>
+
+            <div class='col-sm-5'>
+              <img src='<%= @results.first["image_url"] %>' /><br/>
+              <a href='https://www.rijksmuseum.nl/nl/collectie/<%= @results.first["object_number"] %>' target='_blank'>
+                '<%= @results.first["long_title"] %>'
+              </a>
+              <h3><%= @results.first["similarity"].to_i %>%</h3>
+            </div>
+          </div>
         </div>
 
-        <h2>kind of looks like:</h2>
+        <h2>and also:</h2>
 
         <div class="row" id="results">
-        <% @results.each do |result| %>
-          <div class='col-sm-4'>
-            <h3><%= result["similarity"].to_i %>%</h3>
-            <img src='<%= result["image_url"] %>' />
-            <a href='https://www.rijksmuseum.nl/nl/collectie/<%= result["object_number"] %>' target='_blank'>'<%= result["long_title"] %>'</a>
-          </div>
-        <% end %>
+          <% @results[1..3].each do |result| %>
+            <div class='col-sm-4'>
+              <h3><%= result["similarity"].to_i %>%</h3>
+              <img src='<%= result["image_url"] %>' />
+              <a href='https://www.rijksmuseum.nl/nl/collectie/<%= result["object_number"] %>' target='_blank'>
+                '<%= result["long_title"] %>'
+              </a>
+            </div>
+          <% end %>
         </div>
       <% end %>
+
     </div>
   </body>
 </html>

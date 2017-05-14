@@ -33,7 +33,7 @@ get '/lookalikes/:id' do |id|
         name: "uploaded/#{id}",
       },
     },
-    max_faces: 3,
+    max_faces: 4,
   )
 
   s3 = Aws::S3::Resource.new(region: AWS_REGION)
