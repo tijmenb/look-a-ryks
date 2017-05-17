@@ -2,8 +2,8 @@ require 'sinatra'
 require 'aws-sdk'
 require 'securerandom'
 
-BUCKET = "rijks-aws-experiment"
-AWS_REGION = 'eu-west-1'
+BUCKET = 'rijks-aws-experiment'.freeze
+AWS_REGION = 'eu-west-1'.freeze
 DATABASE = JSON.parse(File.read('db.json'))
 
 get '/' do
@@ -25,15 +25,15 @@ get '/lookalikes/:id' do |id|
   client = Aws::Rekognition::Client.new(region: AWS_REGION)
 
   resp = client.search_faces_by_image(
-    collection_id: "rijksmuseum-portrets",
+    collection_id: 'rijksmuseum-portrets',
     face_match_threshold: 10,
     image: {
       s3_object: {
         bucket: BUCKET,
-        name: "uploaded/#{id}",
-      },
+        name: "uploaded/#{id}"
+      }
     },
-    max_faces: 4,
+    max_faces: 4
   )
 
   s3 = Aws::S3::Resource.new(region: AWS_REGION)
@@ -41,8 +41,8 @@ get '/lookalikes/:id' do |id|
   @uploaded_url = obj.presigned_url(:get)
 
   @results = resp.face_matches.map do |r|
-    e = DATABASE.find { |entry| entry["object_number"] == r.face.external_image_id }
-    e.merge("similarity" => r.similarity)
+    e = DATABASE.find { |entry| entry['object_number'] == r.face.external_image_id }
+    e.merge('similarity' => r.similarity)
   end
 
   erb :view
