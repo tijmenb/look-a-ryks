@@ -6,4 +6,8 @@ class Artwork
   def self.find(id)
     DATABASE.find { |entry| entry['object_number'] == id }
   end
+
+  def self.count
+    DATABASE.count
+  end
 end

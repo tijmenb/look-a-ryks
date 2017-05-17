@@ -10,7 +10,7 @@ This is a Sinatra app that allows users to upload a picture. The picture is uplo
 
 ## Collection
 
-The collection we currently match against contains some 7,000 portraits from the Rijksmuseum. The uploading was a bit of a manual process, but [you can find the code here][training].
+The collection we currently match against contains some 20.000 portraits from the Rijksmuseum. The uploading was a bit of a manual process, but [you can find the code here][training].
 
 [training]: https://github.com/tijmenb/rijksmuseum-aws-experiment
 
