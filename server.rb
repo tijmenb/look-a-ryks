@@ -2,9 +2,10 @@ require 'sinatra'
 require 'aws-sdk'
 require 'securerandom'
 
+require_relative 'lib/artwork'
+
 BUCKET = 'rijks-aws-experiment'.freeze
 AWS_REGION = 'eu-west-1'.freeze
-DATABASE = JSON.parse(File.read('db.json'))
 
 get '/' do
   erb :view
@@ -40,9 +41,9 @@ get '/lookalikes/:id' do |id|
   obj = s3.bucket(BUCKET).object("uploaded/#{id}")
   @uploaded_url = obj.presigned_url(:get)
 
-  @results = resp.face_matches.map do |r|
-    e = DATABASE.find { |entry| entry['object_number'] == r.face.external_image_id }
-    e.merge('similarity' => r.similarity)
+  @results = resp.face_matches.map do |result|
+    artwork = Artwork.find(result.face.external_image_id)
+    artwork.merge('similarity' => result.similarity)
   end
 
   erb :view
