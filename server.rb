@@ -28,7 +28,9 @@ end
 get '/lookalikes/:id' do |id|
   begin
     file = UploadedFile.new(id)
-    @results = Search.new(file).results
+    search = Search.new(file)
+    @results = search.results
+    @uploaded_pos = search.uploaded_pos
     @uploaded_url = file.signed_url
   rescue Search::Error => e
     status 400
