@@ -21,15 +21,6 @@
       <p class="lead">
         Look-a-Ryks uses facial recognition to find people who look like you from the
         <a href='https://www.rijksmuseum.nl/en/rijksstudio'>Rijksmuseum art collection</a>.
-
-        <br/>
-
-        Examples:
-        <a href='/lookalikes/ca53c344-f4da-4891-ad81-1a93eb65f273'>Taylor Swift</a>,
-        <a href='/lookalikes/9184d6c6-04fa-4fa0-871f-344a932f9692'>David Beckham</a>,
-        <a href='/lookalikes/8367f184-f01a-4378-9932-ee7d3e82bd6b'>Jennifer Lawrence</a>,
-        <a href='/lookalikes/1ccfcc6f-796f-4260-9ea2-863caad06667'>Sean Spicer</a>,
-        <a href='/lookalikes/f75031c6-ac7a-424c-a781-2eb4a9309c34'>Sterling Archer</a>.
       </p>
 
       <form action='/upload' enctype="multipart/form-data" method='POST' id="form">
@@ -77,7 +68,16 @@
         </div>
       <% end %>
 
-      <hr/>
+      <div id="examples" class="lead">
+        Examples:
+        <a href='/lookalikes/47335afb-fc63-4983-915e-dd2e307d982f'>Vladimir Putin</a>,
+        <a href='/lookalikes/ca53c344-f4da-4891-ad81-1a93eb65f273'>Taylor Swift</a>,
+        <a href='/lookalikes/09798ad5-e4bf-4e5f-b6e3-25c8296c6c16'>Donald Trump</a>,
+        <a href='/lookalikes/1ccfcc6f-796f-4260-9ea2-863caad06667'>Sean Spicer</a>,
+        <a href='/lookalikes/7605b3eb-b369-4dbf-bfd4-e271cd4f6cdc'>Theresa May</a>,
+        <a href='/lookalikes/e65b1d4f-13bd-419f-b5c4-7f587a81c7ec'>Jeremy Corbyn</a>.
+      </div>
+
       <div id='footer'>
         This works by matching your image against a set of <%= Artwork.formatted_count %>
         portraits in the Rijksmuseum collection. <a href='https://github.com/tijmenb/look-a-ryks'>Source code on GitHub</a>.
