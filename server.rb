@@ -5,6 +5,7 @@ require 'aws-sdk'
 require 'securerandom'
 
 require_relative 'lib/artwork'
+require_relative 'lib/uploaded_file'
 
 BUCKET = 'rijks-aws-experiment'
 AWS_REGION = 'eu-west-1'
@@ -16,10 +17,8 @@ end
 post '/upload' do
   file = params[:file][:tempfile]
 
-  s3 = Aws::S3::Resource.new(region: AWS_REGION)
   random = SecureRandom.uuid
-  object = s3.bucket(BUCKET).object("uploaded/#{random}")
-  object.upload_file(file.path)
+  UploadedFile.new(random).upload(file.path)
 
   redirect "/lookalikes/#{random}"
 end
@@ -40,9 +39,7 @@ get '/lookalikes/:id' do |id|
       max_faces: 4
     )
 
-    s3 = Aws::S3::Resource.new(region: AWS_REGION)
-    obj = s3.bucket(BUCKET).object("uploaded/#{id}")
-    @uploaded_url = obj.presigned_url(:get)
+    @uploaded_url = UploadedFile.new(id).signed_url
 
     @results = resp.face_matches.map do |result|
       artwork = Artwork.find(result.face.external_image_id)
