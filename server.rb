@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 require 'sinatra'
 require 'appsignal/integrations/sinatra'
 require 'aws-sdk'
@@ -5,8 +6,8 @@ require 'securerandom'
 
 require_relative 'lib/artwork'
 
-BUCKET = 'rijks-aws-experiment'.freeze
-AWS_REGION = 'eu-west-1'.freeze
+BUCKET = 'rijks-aws-experiment'
+AWS_REGION = 'eu-west-1'
 
 get '/' do
   erb :view
