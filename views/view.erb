@@ -79,7 +79,8 @@
 
       <hr/>
       <div id='footer'>
-        This works by matching your image against a set of <%= Artwork.count.to_s.reverse.gsub(/(\d{3})(?=\d)/, '\\1,').reverse %> portraits in the Rijksmuseum collection. <a href='https://github.com/tijmenb/look-a-ryks'>Source code on GitHub</a>.
+        This works by matching your image against a set of <%= Artwork.formatted_count %>
+        portraits in the Rijksmuseum collection. <a href='https://github.com/tijmenb/look-a-ryks'>Source code on GitHub</a>.
       </div>
     </div>
 
