@@ -1,4 +1,5 @@
 require 'sinatra'
+require 'appsignal/integrations/sinatra'
 require 'aws-sdk'
 require 'securerandom'
 
