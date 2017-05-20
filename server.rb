@@ -20,11 +20,8 @@ get '/' do
 end
 
 post '/upload' do
-  file = params[:file][:tempfile]
-
   random = SecureRandom.uuid
-  UploadedFile.new(random).upload(file.path)
-
+  UploadedFile.new(random).upload(params[:file][:tempfile].path)
   redirect "/lookalikes/#{random}"
 end
 
