@@ -1,4 +1,6 @@
 class UploadedFile
+  BUCKET = 'rijks-aws-experiment'
+
   attr_reader :id
 
   def initialize(id)
@@ -11,6 +13,13 @@ class UploadedFile
 
   def signed_url
     object.presigned_url(:get)
+  end
+
+  def s3_object
+    {
+      bucket: BUCKET,
+      name: "uploaded/#{id}",
+    }
   end
 
 private
