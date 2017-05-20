@@ -2,6 +2,11 @@
 require 'spec_helper'
 
 RSpec.describe 'Uploading images', type: :feature do
+  before do
+    ENV['AWS_ACCESS_KEY_ID'] = 'ABC'
+    ENV['AWS_SECRET_ACCESS_KEY'] = 'ABC'
+  end
+
   it 'shows images to the user when the image contains faces' do
     stub_image_upload
     stub_successful_recognition_request
@@ -14,7 +19,24 @@ RSpec.describe 'Uploading images', type: :feature do
 
     click_button 'Upload'
 
-    expect(page).to have_content("Portret van een onbekende jonge Fransman, anoniem, ca. 1883 - 1886")
+    expect(page.status_code).to eql(200)
+    expect(page).to have_content('Portret van een onbekende jonge Fransman, anoniem, ca. 1883 - 1886')
+  end
+
+  it 'shows an error if the image cannot be read' do
+    stub_image_upload
+    stub_failed_recognition_request
+
+    visit '/'
+
+    expect(page).to have_content('Look-a-Ryks')
+
+    attach_file('file', 'spec/support/image.jpg')
+
+    click_button 'Upload'
+
+    expect(page.status_code).to eql(400)
+    expect(page).to have_content('Sorry, but this image could not be processed. Please try again')
   end
 
   def stub_image_upload
@@ -51,6 +73,17 @@ RSpec.describe 'Uploading images', type: :feature do
             'Width' => 0.2516297399997711
           },
           'SearchedFaceConfidence' => 99.76985168457031
+        )
+      )
+  end
+
+  def stub_failed_recognition_request
+    stub_request(:post, %r{https://rekognition.eu-west-1.amazonaws.com/*})
+      .to_return(
+        status: 400,
+        body: JSON.dump(
+          '__type' => 'InvalidImageFormatException',
+          'Message' => "Invalid Input, input image shouldn't be empty"
         )
       )
   end

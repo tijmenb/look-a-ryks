@@ -41,6 +41,10 @@
         <input type="submit" value="Upload" />
       </form>
 
+      <% if @error_message %>
+        <%= @error_message %>
+      <% end %>
+
       <% if @uploaded_url %>
         <div class="container">
           <div class="row" id="uploaded-photo">

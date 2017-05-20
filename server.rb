@@ -27,25 +27,30 @@ end
 get '/lookalikes/:id' do |id|
   client = Aws::Rekognition::Client.new(region: AWS_REGION)
 
-  resp = client.search_faces_by_image(
-    collection_id: 'rijksmuseum-portrets',
-    face_match_threshold: 10,
-    image: {
-      s3_object: {
-        bucket: BUCKET,
-        name: "uploaded/#{id}"
-      }
-    },
-    max_faces: 4
-  )
+  begin
+    resp = client.search_faces_by_image(
+      collection_id: 'rijksmuseum-portrets',
+      face_match_threshold: 10,
+      image: {
+        s3_object: {
+          bucket: BUCKET,
+          name: "uploaded/#{id}"
+        }
+      },
+      max_faces: 4
+    )
 
-  s3 = Aws::S3::Resource.new(region: AWS_REGION)
-  obj = s3.bucket(BUCKET).object("uploaded/#{id}")
-  @uploaded_url = obj.presigned_url(:get)
+    s3 = Aws::S3::Resource.new(region: AWS_REGION)
+    obj = s3.bucket(BUCKET).object("uploaded/#{id}")
+    @uploaded_url = obj.presigned_url(:get)
 
-  @results = resp.face_matches.map do |result|
-    artwork = Artwork.find(result.face.external_image_id)
-    artwork.merge('similarity' => result.similarity)
+    @results = resp.face_matches.map do |result|
+      artwork = Artwork.find(result.face.external_image_id)
+      artwork.merge('similarity' => result.similarity)
+    end
+  rescue Aws::Rekognition::Errors::InvalidImageFormatException
+    status 400
+    @error_message = 'Sorry, but this image could not be processed. Please try again.'
   end
 
   erb :view
