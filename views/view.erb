@@ -12,8 +12,6 @@
     <link rel="stylesheet" href="/css/styles.css">
 
     <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
   </head>
 
   <body>
@@ -40,7 +38,29 @@
         <div class="container">
           <div class="row" id="uploaded-photo">
             <div class='col-sm-5'>
-              <img src='<%= @uploaded_url %>' />
+              <div class='uploaded-container'>
+                <img src='<%= @uploaded_url %>' id='uploaded-picture' />
+              </div>
+
+              <script type="text/javascript">
+                $(window).on("load", function() {
+                  var img = $("#uploaded-picture");
+
+                  var w = img.width() * <%= @uploaded_pos[:width] %>;
+                  var h = img.height() * <%= @uploaded_pos[:height] %>;
+                  var x = img.height() * <%= @uploaded_pos[:top] %>;
+                  var y = img.width() * <%= @uploaded_pos[:left] %>;
+
+                  var rect = document.createElement('div');
+                  $('.uploaded-container').append(rect);
+
+                  rect.classList.add('rect');
+                  rect.style.width = w + 'px';
+                  rect.style.height = h + 'px';
+                  rect.style.top = x + 'px';
+                  rect.style.left = y + 'px';
+                })
+              </script>
             </div>
 
             <div class='col-sm-2'>
@@ -48,7 +68,29 @@
             </div>
 
             <div class='col-sm-5'>
-              <img src='<%= @results.first["image_url"] %>' /><br/>
+              <div class='featured-container'>
+                <img src='<%= @results.first["image_url"] %>' id="most-similar" /><br/>
+              </div>
+
+              <script type="text/javascript">
+                $(window).on("load", function() {
+                  var img = $("#most-similar");
+                  var w = img.width() * <%= @results.first["pos"][:width] %>;
+                  var h = img.height() * <%= @results.first["pos"][:height] %>;
+                  var x = img.height() * <%= @results.first["pos"][:top] %>;
+                  var y = img.width() * <%= @results.first["pos"][:left] %>;
+
+                  var rect = document.createElement('div');
+                  $('.featured-container').append(rect);
+
+                  rect.classList.add('rect');
+                  rect.style.width = w + 'px';
+                  rect.style.height = h + 'px';
+                  rect.style.top = x + 'px';
+                  rect.style.left = y + 'px';
+                })
+              </script>
+
               <a href='https://www.rijksmuseum.nl/nl/collectie/<%= @results.first["object_number"] %>' target='_blank'>
                 '<%= @results.first["long_title"] %>'
               </a>
