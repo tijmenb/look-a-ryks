@@ -19,7 +19,7 @@ RSpec.describe 'Uploading images', type: :feature do
 
     click_button 'Upload'
 
-    expect(page.status_code).to eql(200)
+    expect(page.status_code).to eql(200), page.body
     expect(page).to have_content('Portret van een onbekende jonge Fransman, anoniem, ca. 1883 - 1886')
   end
 
