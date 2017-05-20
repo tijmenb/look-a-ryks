@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 gem 'appsignal'
 gem 'aws-sdk', '~> 2.9'
+gem 'puma'
 gem 'rspec'
 gem 'rubocop'
 gem 'sinatra'

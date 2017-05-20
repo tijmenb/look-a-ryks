@@ -38,6 +38,7 @@ GEM
       ast (~> 2.2)
     powerpack (0.1.1)
     public_suffix (2.0.5)
+    puma (3.8.2)
     rack (2.0.2)
     rack-protection (2.0.0)
       rack
@@ -87,6 +88,7 @@ DEPENDENCIES
   appsignal
   aws-sdk (~> 2.9)
   capybara
+  puma
   rspec
   rubocop
   sinatra
