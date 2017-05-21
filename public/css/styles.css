@@ -31,8 +31,13 @@ a:hover {
 }
 
 #uploaded-photo {
-  max-height: 500px;
   margin-bottom: 100px;
+}
+
+@media only screen and (min-width: 576px) {
+  #uploaded-photo {
+    max-height: 500px;
+  }
 }
 
 h2 {
