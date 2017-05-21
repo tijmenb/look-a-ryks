@@ -8,6 +8,20 @@
 
     <title>Look-a-Ryks</title>
 
+    <meta name="description" content="Look-a-Ryks uses facial recognition to find people who look like you from the Rijksmuseum art collection">
+
+    <meta property="og:title" content="Look-a-Ryks" />
+    <meta property="og:site_name" content="Look-a-Ryks" />
+    <meta property="og:url" content="https://look-a-ryks.herokuapp.com/" />
+    <meta property="og:type" content="website" />
+
+    <% if @uploaded_url %>
+      <meta property="og:image" content="<%= @results.first["image_url"] %>" />
+    <% end %>
+
+    <meta property="og:description"
+      content="Look-a-Ryks uses facial recognition to find people who look like you from the Rijksmuseum art collection" />
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/styles.css">
 
