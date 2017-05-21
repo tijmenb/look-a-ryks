@@ -4,7 +4,7 @@ Look-a-Ryks uses facial recognition to find people who look like you from the [R
 
 ## How it works
 
-This is a Sinatra app that allows users to upload a picture. The picture is uploaded to an S3 bucket. We then [Amazon Rekognition][Rekognition] to find similar faces in a collection of portraits we've uploaded.
+This is a Sinatra app that allows users to upload a picture. The picture is uploaded to an S3 bucket. We then use [Amazon Rekognition][Rekognition] to find similar faces in a collection of portraits we've uploaded.
 
 [Rekognition]: https://aws.amazon.com/rekognition/
 
