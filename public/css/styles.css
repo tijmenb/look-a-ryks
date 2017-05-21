@@ -58,7 +58,7 @@ h2 {
 }
 
 .rect {
-  border: 2px solid #a64ceb;
+  border: 1px solid #a64ceb;
   left: -1000px;
   position: absolute;
   top: -1000px;
