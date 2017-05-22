@@ -13,6 +13,7 @@ AWS_REGION = 'eu-west-1'
 configure :development do
   set :show_exceptions, false
   set :raise_errors, true
+  set :bind, '0.0.0.0'
 end
 
 get '/' do
