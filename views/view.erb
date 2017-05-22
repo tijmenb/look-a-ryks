@@ -25,7 +25,66 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/styles.css">
 
-    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="/js/tracking-min.js"></script>
+    <script src="/js/face-min.js"></script>
+
+    <script>
+      window.onload = function() {
+        var video = document.getElementById('video');
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext('2d');
+
+        var copy_canvas = document.getElementById('copy_canvas');
+        var copy_context = copy_canvas.getContext('2d');
+
+        var tracker = new tracking.ObjectTracker('face');
+        tracker.setInitialScale(4);
+        tracker.setStepSize(2);
+        tracker.setEdgesDensity(0.1);
+        tracking.track('#video', tracker, { camera: true });
+
+        var submitted = false;
+
+        tracker.on('track', function(event) {
+          // context.clearRect(0, 0, canvas.width, canvas.height);
+
+          event.data.forEach(function(rect) {
+            // context.strokeStyle = '#a64ceb';
+            // context.strokeRect(rect.x, rect.y, rect.width, rect.height);
+            // context.font = '11px Helvetica';
+            // context.fillStyle = "#fff";
+
+            if (!submitted) {
+              console.log("SUBMITTING")
+              submitted = true
+              copy_context.drawImage(video, 0, 0, copy_canvas.width, copy_canvas.height);
+
+              $.ajax({
+                type: "POST",
+                url: "/upload-image-capture",
+                data: {
+                  image: copy_canvas.toDataURL()
+                },
+                success: function (d) {
+                  d = JSON.parse(d)
+                  var image = $("<img src='' />").attr("src", d.image_url)
+                  $(".featured-container").html(image)
+
+                  setTimeout(function () {
+                    submitted = false
+                  }, 5000)
+                }
+             })
+
+            }
+
+          });
+        });
+      };
+      </script>
+
+    </script>
   </head>
 
   <body>
@@ -33,6 +92,20 @@
       <h1>
         Look-a-Ryks
       </h1>
+
+      <div class='row'>
+        <div class='col-sm-4'>
+          <video id="video" width="320" height="240" preload autoplay loop muted></video>
+          <canvas id="canvas" width="320" height="240"></canvas>
+        </div>
+
+        <div class='col-sm-4'>
+          <canvas id="copy_canvas" width="320" height="240"></canvas>
+        </div>
+
+        <div class='col-sm-4 featured-container'>
+        </div>
+      </div>
 
       <p class="lead">
         Look-a-Ryks uses facial recognition to find people who look like you from the

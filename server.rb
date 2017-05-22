@@ -3,6 +3,7 @@ require 'sinatra'
 require 'appsignal/integrations/sinatra'
 require 'aws-sdk'
 require 'securerandom'
+require 'base64'
 
 require_relative 'lib/artwork'
 require_relative 'lib/uploaded_file'
@@ -24,6 +25,26 @@ post '/upload' do
   random = SecureRandom.uuid
   UploadedFile.new(random).upload(params[:file][:tempfile].path)
   redirect "/lookalikes/#{random}"
+end
+
+post '/upload-image-capture' do
+  client = Aws::Rekognition::Client.new(region: AWS_REGION)
+  image = Base64.decode64(params[:image].gsub('data:image/png;base64,', ''))
+
+  begin
+    response = client.search_faces_by_image(
+      collection_id: 'rijksmuseum-portrets',
+      face_match_threshold: 10,
+      image: { bytes: image },
+      max_faces: 1,
+    )
+
+    result = response.face_matches.first
+    artwork = Artwork.find(result.face.external_image_id)
+    artwork.to_h.to_json
+  rescue Aws::Rekognition::Errors::InvalidParameterException
+    {}.to_json
+  end
 end
 
 get '/lookalikes/:id' do |id|

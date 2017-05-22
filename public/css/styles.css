@@ -68,3 +68,13 @@ h2 {
   position: absolute;
   top: -1000px;
 }
+
+.featured-container img {
+  width: 320px;
+}
+/*
+#video, #canvas {
+  margin-left: 230px;
+  margin-top: 120px;
+  position: absolute;
+}*/
